@@ -1,0 +1,11 @@
+-r requirements.txt
+
+# for generation of requirements
+pip-tools==6.5.1
+
+# for debugging
+django-debug-toolbar==3.2.4
+ipdb
+
+# for tests
+factory-boy==3.2.1
