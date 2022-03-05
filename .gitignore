@@ -4,6 +4,7 @@
 
 # IDE file
 .vscode
+.DS_Store
 
 # Environment temp files
 .env
