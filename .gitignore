@@ -1,0 +1,13 @@
+# Python bytecode:
+*.pyc
+*.pyo
+
+# IDE file
+.vscode
+
+# Environment temp files
+.env
+.envrc
+
+# Virtual environment files
+.venv
