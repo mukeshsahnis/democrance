@@ -3,6 +3,9 @@
 
 # Democrance test
 
+- Used default sqlite3 however you can use Mysql or any DBMS
+- In another DBMS you have to change the settings as describe in django-v4.0
+
 ```bash
 # Clone repository
 git clone https://github.com/mukeshsahnis/democrance.git
@@ -54,3 +57,15 @@ python manage.py runserver
 
 - When customer create any quote for policy we keep it new as default to allow the user to accept the quote for live login as admin(superuser) and just change the state of policy to bounded.
 - On state is changed to bounded it is visible on user dashboard to accept the quote
+
+## Verifying things
+
+- Just create super user with following command
+
+```python
+python manage.py createsuperuser
+```
+
+- Login /admin/ and verify the things
+
+### Thanks a lot to read this.
