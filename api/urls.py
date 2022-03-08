@@ -10,4 +10,5 @@ urlpatterns = [
         views.create_customer,
         name="create_customer",
     ),
+    path("vi/quote/", views.quote, name="quote"),
 ]
