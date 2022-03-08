@@ -71,3 +71,24 @@ class Customer(AbstractBaseUser):
         # Is required else admin won't work
         # Handle whether the user has permissions to view the app `app_label`?"
         return self.is_admin
+
+
+class Policy(models.Model):
+    # choice for state
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, help_text="Customer for this quote"
+    )
+    type = models.CharField(
+        max_length=50,
+        help_text="Type of quote (e.g. Personal, Accident, etc.)",
+    )
+    premium = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text="Premium for this quote"
+    )
+    cover = models.DecimalField(
+        max_digits=10, decimal_places=2, help_text="Cover for this quote"
+    )
+    state = models.CharField(max_length=50, help_text="State for this quote")
+
+    def __str__(self):
+        return self.customer.first_name + ": " + str(self.type)
