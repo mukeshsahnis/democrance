@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from api.models import Customer
+
+# Add customer model to admin site
+admin.site.register(Customer)
