@@ -5,9 +5,7 @@
 
 {% block content %}
 <div>
-	{% if request.user.is_authenticated %}
 	<a href="{% url 'logout' %}">Logout</a>
-	{% endif %}
 </div>
 <div>
 	<h1>Dashboard</h1>
@@ -15,5 +13,33 @@
 	<div>
 		Welcome to Democrance!
 	</div>
+	{% for quote in quotes %}
+		<table>
+			<tbody>
+				<th>Type</th>
+				<th>Premium</th>
+				<th>Cover</th>
+				<th>State</th>
+			</tbody>
+			<tr>
+				<td>{{ quote.type }}</td>
+				<td>{{ quote.premium }}</td>
+				<td>{{ quote.cover }}</td>
+				<td>{{ quote.state }}</td>
+				{% if quote.state == 'bounded' %}
+				<td>
+					<form method="POST" action="{% url 'api:accept_quote' %}">
+						{% csrf_token %}
+						<input type="hidden" name="quote_id" value="{{ quote.id }}">
+						<input type="submit" value="Accept">
+					</form>
+				</td>
+				{% endif %}
+			</tr>
+		</table>
+	{% empty %}
+		<a href="{% url 'api:create_quote' %}">Create Quote</a>
+	{% endfor %}
+	<a href="{% url 'api:create_quote' %}">Create Another Quote</a>
 </div>
 {% endblock content %}
