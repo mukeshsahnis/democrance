@@ -21,3 +21,36 @@ python manage.py migrate
 # Start development server
 python manage.py runserver
 ```
+
+## API endpoint testing
+
+- tested on postman with content-type application/json and raw json data in request as follows:
+
+- to test customer creation following fields are required
+
+```json
+{
+  "email": "foo@gmail.com",
+  "password": "democrance@123",
+  "first_name": "Foo",
+  "last_name": "Bar",
+  "dob": "06-10-1989"
+}
+```
+
+- to test quote creation following fields are required in request
+
+```json
+{
+  "customer_id": "2",
+  "type": "personal-accident",
+  "premium": 200,
+  "cover": 200000,
+  "state": "new"
+}
+```
+
+## Creation of quote by customer
+
+- When customer create any quote for policy we keep it new as default to allow the user to accept the quote for live login as admin(superuser) and just change the state of policy to bounded.
+- On state is changed to bounded it is visible on user dashboard to accept the quote
