@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
@@ -163,3 +164,17 @@ def accept_quote(request):
     else:
         form = PolicyForm()
     return render(request, "create-new-quote.html", {"form": form})
+
+
+def search_customers(request):
+    search_term = request.GET.get("search_term", "")
+    customers = Customer.objects.filter(
+        Q(first_name__icontains=search_term)
+        | Q(last_name__icontains=search_term)
+        | Q(dob__icontains=search_term)
+    )
+    return render(
+        request,
+        "search-customers.html",
+        {"search_term": search_term, "customers": customers},
+    )
