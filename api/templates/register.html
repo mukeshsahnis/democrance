@@ -1,8 +1,10 @@
+{% extends "index.html" %}
 {% load static %}
 
 {% block title %}Register{% endblock %}
 
 {% block content %}
+<h1>Register</h1>
 <form method="post" action="{% url 'register' %}">
 	{% csrf_token %}
 	{% include "parts/form.html" with form=form %}
