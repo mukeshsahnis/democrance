@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Basic Page Needs -->
+	<meta charset="utf-8">
+	<title>{% block title %}Democrance{% endblock %}</title>
+
+	<!-- favicons -->
+	<link rel="apple-touch-icon" sizes="180x180" href="">
+
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" media="all">
+
+	{% block head %}{% endblock head %}
+</head>
+
+<body>
+	{% block main %}
+		<div class="container">
+			{% include "parts/messages.html" %}
+			{% block content %}
+			{% endblock %}
+		</div>
+	{% endblock %}
+
+	{% block footer %}
+		<footer></footer>
+	{% endblock footer %}
+</body>
+
+</html>

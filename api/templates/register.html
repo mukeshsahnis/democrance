@@ -1,0 +1,14 @@
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'register' %}">
+	{% csrf_token %}
+	{% include "parts/form.html" with form=form %}
+
+	<button type="submit">
+		Create account
+	</button>
+</form>
+{% endblock %}

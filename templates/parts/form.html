@@ -1,0 +1,25 @@
+{# https://docs.djangoproject.com/en/4.0/topics/forms/#rendering-fields-manually #}
+
+{% if form.non_field_errors %}
+<div>
+{{ form.non_field_errors}}
+</div>
+{% endif %}
+
+{% for hidden in form.hidden_fields %}
+{{ hidden }}
+{% endfor %}
+
+{% for boundfield in form.visible_fields %}
+<div class="form-field{% if boundfield.errors %} has-error{% endif %}">
+  <label for="{{ boundfield.id_for_label }}">
+    {{ boundfield.label }}
+    {% if boundfield.help_text %}
+    <br>
+    <span class="helptext">{{ boundfield.help_text|safe }}</span>
+    {% endif %}
+  </label>
+  {{ boundfield.errors }}
+  {{ boundfield }}
+</div>
+{% endfor %}
