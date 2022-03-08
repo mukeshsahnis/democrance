@@ -83,12 +83,14 @@ class Policy(models.Model):
         help_text="Type of quote (e.g. Personal, Accident, etc.)",
     )
     premium = models.DecimalField(
-        max_digits=5, decimal_places=2, help_text="Premium for this quote"
+        max_digits=10, decimal_places=2, help_text="Premium for this quote"
     )
     cover = models.DecimalField(
-        max_digits=10, decimal_places=2, help_text="Cover for this quote"
+        max_digits=15, decimal_places=2, help_text="Cover for this quote"
     )
-    state = models.CharField(max_length=50, help_text="State for this quote")
+    state = models.CharField(
+        default="New", max_length=50, help_text="State for this quote"
+    )
 
     def __str__(self):
         return self.customer.first_name + ": " + str(self.type)
