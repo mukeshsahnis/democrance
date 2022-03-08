@@ -1,0 +1,43 @@
+body {
+  --red: hsl(10, 94%, 44%);
+  --ink-700: hsl(207, 12%, 43%);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  min-height: 400px;
+}
+
+/* Django forms */
+.form-field label {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.form-field input[type="email"],
+.form-field input[type="text"],
+.form-field input[type="url"],
+.form-field input[type="password"],
+.form-field.has-error input,
+.form-field.has-error textarea {
+  border-color: var(--red);
+}
+
+.errorlist {
+  list-style: none;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.errorlist.nonfield {
+  border: 1px solid var(--red);
+}
+
+.helptext {
+  color: var(--ink-700);
+  font-weight: normal;
+}
