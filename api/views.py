@@ -149,13 +149,14 @@ def create_quote(request):
 
 
 # accept quote
+# before changing the status of the policy
+# we redirect user to the payment page
+# after complition of payment changed the status of the policy to live
 @login_required
 def accept_quote(request):
     if request.method == "POST":
         quote_id = request.POST.get("quote_id")
         policy = Policy.objects.get(id=quote_id)
-        # Here we can add logic of payment for policy and send receipt
-        # after successful payment we can update policy status to live
         policy.state = "live"
         policy.save()
         msg = "Quote accepted."
