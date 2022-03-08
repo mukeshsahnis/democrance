@@ -10,6 +10,6 @@ urlpatterns = [
         views.create_customer,
         name="create_customer",
     ),
-    path("vi/quote/", views.quote, name="quote"),
+    path("v1/quote/", views.quote, name="quote"),
     path("dash/", views.dash, name="dash"),
 ]
