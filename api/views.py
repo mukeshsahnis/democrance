@@ -1,12 +1,15 @@
 import datetime as dt
 import json
 
+from django.contrib import messages
 from django.forms.models import model_to_dict
 from django.http.response import JsonResponse
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from api.models import Customer
+from api.forms import PolicyForm
+from api.models import Customer, Policy
 
 
 @require_POST
@@ -37,3 +40,46 @@ def create_customer(request):
     )
     # Return jsonResponse
     return JsonResponse(customer_dict)
+
+
+@require_POST
+@csrf_exempt
+def quote(request):
+    # Get quote data from request
+    data = json.loads(request.body)
+    customer_id = data.get("customer_id")
+    type = data.get("type")
+    premium = data.get("premium")
+    cover = data.get("cover")
+    state = data.get("state")
+
+    # Create policy object
+    policy = Policy(
+        customer_id=customer_id,
+        type=type,
+        premium=premium,
+        cover=cover,
+        state=state,
+    )
+    policy.save()
+
+    # convert policy object to dict
+    policy_dict = model_to_dict(policy)
+    # Return jsonResponse
+    return JsonResponse(policy_dict)
+
+
+# create policy through PolicyForm
+def create_quote(request):
+    if request.method == "POST":
+        form = PolicyForm(request.POST)
+        if form.is_valid():
+            policy = form.save(commit=False)
+            policy.customer = request.user
+            policy.save()
+            msg = "Thanks for your submission."
+            messages.add_message(request, messages.SUCCESS, msg)
+            return redirect("/")
+    else:
+        form = PolicyForm()
+    return render(request, "create-new-quote.html", {"form": form})
