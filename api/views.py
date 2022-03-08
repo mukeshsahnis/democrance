@@ -1,15 +1,34 @@
 import datetime as dt
 import json
 
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from api.forms import PolicyForm
+from api.forms import PolicyForm, RegisterForm
 from api.models import Customer, Policy
+from api.utils import get_next_page
+
+
+def index(request):
+    if request.user.is_authenticated:
+        return dash(request)
+    return home(request)
+
+
+def home(request):
+    return render(request, "home.html")
+
+
+@login_required
+def dash(request):
+    return render(request, "dashboard.html")
 
 
 @require_POST
@@ -40,6 +59,47 @@ def create_customer(request):
     )
     # Return jsonResponse
     return JsonResponse(customer_dict)
+
+
+def register(request):
+    success_url = get_next_page(
+        request.POST.get("next"), settings.LOGIN_REDIRECT_URL
+    )
+
+    # Redirect if already logged in
+    if request.user.is_authenticated:
+        if success_url == request.path:
+            raise ValueError(
+                "Redirection loop for authenticated user detected. Check that "
+                "your redirection doesn't point to a register page."
+            )
+        return redirect(success_url)
+
+    if request.method == "POST":
+        form = RegisterForm(data=request.POST)
+        if form.is_valid():
+
+            user = authenticate(
+                username=form.cleaned_data["email2"],
+                password=form.cleaned_data["password"],
+            )
+            if user:
+                login(request, user)
+                return redirect(success_url)
+            else:
+                user = Customer.objects.create(
+                    email=form.cleaned_data["email2"],
+                    password=form.cleaned_data["password"],
+                    first_name=form.cleaned_data["first_name"],
+                    last_name=form.cleaned_data["last_name"],
+                    dob=form.cleaned_data["dob"],
+                )
+                # login the user
+                login(request, user)
+                return redirect(success_url)
+    else:
+        form = RegisterForm()
+    return render(request, "register.html", {"form": form})
 
 
 @require_POST
