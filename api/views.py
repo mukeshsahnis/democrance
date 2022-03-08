@@ -28,7 +28,8 @@ def home(request):
 
 @login_required
 def dash(request):
-    return render(request, "dashboard.html")
+    quotes = Policy.objects.filter(customer=request.user)
+    return render(request, "dashboard.html", {"quotes": quotes})
 
 
 @require_POST
@@ -130,6 +131,7 @@ def quote(request):
 
 
 # create policy through PolicyForm
+@login_required
 def create_quote(request):
     if request.method == "POST":
         form = PolicyForm(request.POST)
@@ -140,6 +142,24 @@ def create_quote(request):
             msg = "Thanks for your submission."
             messages.add_message(request, messages.SUCCESS, msg)
             return redirect("/")
+    else:
+        form = PolicyForm()
+    return render(request, "create-new-quote.html", {"form": form})
+
+
+# accept quote
+@login_required
+def accept_quote(request):
+    if request.method == "POST":
+        quote_id = request.POST.get("quote_id")
+        policy = Policy.objects.get(id=quote_id)
+        # Here we can add logic of payment for policy and send receipt
+        # after successful payment we can update policy status to live
+        policy.state = "live"
+        policy.save()
+        msg = "Quote accepted."
+        messages.add_message(request, messages.SUCCESS, msg)
+        return redirect("/")
     else:
         form = PolicyForm()
     return render(request, "create-new-quote.html", {"form": form})

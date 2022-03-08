@@ -15,7 +15,9 @@ class RegisterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["password"].widget = forms.PasswordInput()
-        self.fields["dob"].widget = forms.SelectDateWidget()
+        self.fields["dob"].widget = forms.SelectDateWidget(
+            years=range(1940, 2020)
+        )
 
     class Meta:
         model = get_user_model()
@@ -68,4 +70,4 @@ class RegisterForm(forms.ModelForm):
 class PolicyForm(ModelForm):
     class Meta:
         model = Policy
-        fields = ("type", "premium", "cover", "state")
+        fields = ("type", "premium", "cover")
